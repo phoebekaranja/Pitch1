@@ -1,0 +1,15 @@
+{% extends 'base.html'%}
+{% block content %}
+{% for four in four%}
+
+<!-- view function for disses category -->
+
+<div class="jumbotron col-md-4">
+<p>{{four.category}}</p>
+<p>{{four.actual_pitch}}</p>
+<p>{{four.date_posted}}</p>
+
+
+</div>
+{% endfor %}
+{% endblock %}
