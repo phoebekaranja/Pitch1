@@ -1,5 +1,5 @@
 import unittest
-from app.models import Commebts
+from app.models import Comments
 
 class UserModelTest(unittest.TestCase):
 
