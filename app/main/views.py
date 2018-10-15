@@ -19,7 +19,7 @@ def index():
     title = 'Home - Welcome to The best Pitching Website Online'
 
     search_pitch = request.args.get('pitch_query')
-    pitches= Pitch.get_all_pitches()  
+    pitches= Pitch.get_all_pitches()
 
     return render_template('index.html', title = title, pitches= pitches)
 
@@ -31,7 +31,7 @@ def interview():
     View root page function that returns the index page and its data
     '''
     pitches= Pitch.get_all_pitches()
-    title = 'Home - Welcome to The best Pitching Website Online'  
+    title = 'Home - Welcome to The best Pitching Website Online'
     return render_template('interview.html', title = title, pitches= pitches )
 
 @main.route('/pick_up_lines/pitches/')
@@ -65,7 +65,7 @@ def product():
     title = 'Product Pitches'
     pitches= Pitch.get_all_pitches()
     return render_template('product.html', title = title, pitches= pitches )
- 
+
 #  end of category root functions
 
 @main.route('/pitch/<int:pitch_id>')
@@ -144,7 +144,7 @@ def update_pic(uname):
     if 'photo' in request.files:
         filename = photos.save(request.files['photo'])
         path = f'photos/{filename}'
-        user.profile_pic_path = path 
+        user.profile_pic_path = path
         db.session.commit()
     return redirect(url_for('main.profile',uname=uname))
 
@@ -173,7 +173,7 @@ def update_profile(uname):
         db.session.commit()
 
         return redirect(url_for('.profile',uname=user.username))
-    
+
     return render_template('profile/update.html',form =form)
 
 @main.route('/view/comment/<int:id>')
@@ -221,12 +221,10 @@ def one_pitch(id):
 #     print('% disliked' % pitch_id)
 
 
-@main.route('/test/<int:id>')  
+@main.route('/test/<int:id>')
 def test(id):
     '''
     this is route for basic testing
     '''
     pitch =Pitch.query.filter_by(id=1).first()
     return render_template('test.html',pitch= pitch)
-
-

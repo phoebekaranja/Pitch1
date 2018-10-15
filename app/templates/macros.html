@@ -1,3 +1,18 @@
+{% macro displayPitches(pitches_list) %}
+
+   {% for pitch in pitches_list %}
+     <div class="panel style="style="box-shadow: 5px 5px 5px 5px #f2f2f2; padding:10px; text-align:center;    categories = PitchCategory.query.all()
+   return categories">
+         <p>{{pitch.pitch}}</p>
+         <br>
+         <a href="{{url_for('main.new_comment',id=pitch.id)}}">Add a Comment</a>&nbsp;&nbsp;|
+         <a href="{{url_for('main.view_comments',id=pitch.id)}}">View Comments</a>&nbsp;&nbsp;|
+         <a href="{{url_for('main.new_comment',id=pitch.id)}}">Vote</a>
+         <br>
+     </div>
+   {% endfor %}
+
+{% endmacro %}
 {% macro displaySpecificPitch(specific_pitch_list) %}
  {% for comment in specific_pitch_list %}
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-left">
