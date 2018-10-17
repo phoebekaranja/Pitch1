@@ -1,5 +1,5 @@
 from flask import Flask
-from config import config_options 
+from config import config_options,Config
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
@@ -21,14 +21,16 @@ def create_app(config_name):
     app = Flask(__name__)
 
     # Creating the app configuration
-    app.config.from_object(config_options[config_name])  
+    app.config.from_object(config_options[config_name])
+    app.config.from_object(Config)
 
     # initializing flask extensions
+
     bootstrap.init_app(app)
     db.init_app(app)
-    login_manager.init_app(app)
-    
+
     simple.init_app(app)
+    login_manager.init_app(app)
 
     # Registering the blueprints
     from .main import main as main_blueprint
@@ -39,7 +41,7 @@ def create_app(config_name):
 
     # configure UploadSet
     configure_uploads(app,photos)
-    
+
     mail.init_app(app)
 
 

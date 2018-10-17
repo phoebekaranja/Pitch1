@@ -1,0 +1,19 @@
+{% extends 'base.html'%}
+{% import 'macros.html' as macro%}
+
+{% block content %}
+
+    <div class="container">
+        <h3>PICK UP LINES PITCHES</h3>
+        <a href="{{url_for('main.new_pitch')}}">
+            <br>
+            ADD NEW PITCHES
+        </a>
+
+        <hr>
+
+            {{macro.displayPitchesInCategories(pitches,1)}}
+        <hr>
+
+    </div>
+{% endblock %}

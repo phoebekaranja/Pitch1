@@ -1,19 +1,19 @@
-from . import db 
+from . import db
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import UserMixin
 from . import login_manager
-from datetime import datetime 
+from datetime import datetime
 
 
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return Current_user.query.get(int(user_id))
 
-class User(UserMixin, db.Model):
+class Current_user(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer,primary_key = True)
-    username = db.Column(db.String(255),index = True) 
+    username = db.Column(db.String(255),index = True)
     email = db.Column(db.String(255),unique = True,index = True)
     role_id = db.Column(db.Integer,db.ForeignKey('roles.id'))
     bio = db.Column(db.String(255))
@@ -29,7 +29,7 @@ class User(UserMixin, db.Model):
     @classmethod
     def get_comments(cls,id):
         comments = Comment.query.filter_by(pitch_id=id).all()
-        
+
         return comments
 
     @property
@@ -44,7 +44,7 @@ class User(UserMixin, db.Model):
             return check_password_hash(self.pass_secure, password)
 
     def __repr__(self):
-        return f'User {self.username}'
+        return f'Current_user {self.username}'
 
 class Pitch (db.Model):
     '''
@@ -57,7 +57,7 @@ class Pitch (db.Model):
     category_id = db.Column(db.Integer)
     user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
     comments = db.relationship('Comment',backref = 'pitch',lazy="dynamic")
-        
+
 
     def save_pitch(self):
         '''
@@ -65,7 +65,7 @@ class Pitch (db.Model):
         '''
         db.session.add(self)
         db.session.commit()
-    
+
     @classmethod
     def get_all_pitches(cls):
         '''
@@ -91,9 +91,8 @@ class Comment(db.Model):
     id = db.Column(db.Integer,primary_key = True)
     comment= db.Column(db.String)
     pitch_id = db.Column(db.Integer,db.ForeignKey('pitch.id'))
-    username =  db.Column(db.String)
     votes= db.Column(db.Integer)
-    
+
 
     def save_comment(self):
         '''
@@ -117,10 +116,10 @@ class Role(db.Model):
 
     id = db.Column(db.Integer,primary_key = True)
     name = db.Column(db.String(255))
-    users = db.relationship('User',backref = 'role',lazy="dynamic") 
+    users = db.relationship('Current_user',backref = 'role',lazy="dynamic")
 
     def __repr__(self):
-        return f'User {self.name}'  
+        return f'Current_user {self.name}'
 
 
 class PitchCategory(db.Model):

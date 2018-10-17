@@ -1,1 +1,37 @@
-<h1> pitching {{ id }} </h1>
+{% extends 'base.html'%}
+{% import 'macros.html' as macro%}
+{% import "bootstrap/wtf.html" as wtf %}
+
+<!-- Content block -->
+{% block content %}
+{% for data in found_pitch %}
+<div class="container"style="background-color:powderblue;">
+
+    <!-- Poster background -->
+    <div class="row">
+            <h3>Pitch ID:{{ data.id }}</h3>
+
+            <p> {{ data.pitch }}</p>
+        
+            <a href="/pitch/comments/new/{{data.id}}"> Comment</a>
+    </div>
+    {% endfor %}
+    <div class="row">
+        <div class="col-md-4">
+
+            {{ wtf.quick_form(new_pitch_form) }}
+        </div>
+                    <h1>Comments on this Pitch</h1>
+                    <hr>
+
+                    {% if pitch_comments %}
+                        {{ macro.displayComments(pitch_comments) }}
+
+                    {% else%}
+                        <h3 class="text-center">This Pitch has no Comments </h3>
+                    {% endif %}
+
+                </div>
+
+</div>
+{% endblock %}

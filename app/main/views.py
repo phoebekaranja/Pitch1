@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, url_for, abort
-from flask_login import login_required, current_user
+from flask_login import login_required,current_user
 from . import main
-from ..models import User, Pitch, Comment
+from ..models import Current_user, Pitch, Comment
 from .forms import *
 from .. import db, photos
 from datetime import datetime
@@ -18,10 +18,11 @@ def index():
     '''
     title = 'Home - Welcome to The best Pitching Website Online'
 
+
     search_pitch = request.args.get('pitch_query')
     pitches= Pitch.get_all_pitches()
 
-    return render_template('index.html', title = title, pitches= pitches)
+    return render_template('index.html', title = title, pitches= pitches,user=current_user)
 
 #this section consist of the category root functions
 
@@ -32,7 +33,7 @@ def interview():
     '''
     pitches= Pitch.get_all_pitches()
     title = 'Home - Welcome to The best Pitching Website Online'
-    return render_template('interview.html', title = title, pitches= pitches )
+    return render_template('interview.html', title = title, pitches= pitches, category=category, )
 
 @main.route('/pick_up_lines/pitches/')
 def pick_up_line():
@@ -110,7 +111,7 @@ def new_pitch():
         new_pitch.save_pitch()
         return redirect(url_for('main.index'))
 
-    return render_template('new_pitch.html', new_pitch_form= form, category= category)
+    return render_template('pitch.html', new_pitch_form= form, category= category)
 
 @main.route('/category/<int:id>')
 def category(id):
@@ -131,16 +132,16 @@ def new_comment(id):
     form = CommentsForm()
     vote_form = UpvoteForm()
     if form.validate_on_submit():
-        new_comment = Comment(pitch_id =id,comment=form.comment.data,username=current_user.username,votes=form.vote.data)
+        new_comment = Comment(pitch_id =id,comment=form.comment.data,user=current_user.user,votes=form.vote.data)
         new_comment.save_comment()
         return redirect(url_for('main.index'))
     #title = f'{pitch_result.id} review'
-    return render_template('new_comment.html',comment_form=form, vote_form= vote_form)
+    return render_template('comment.html',comment_form=form, vote_form= vote_form)
 
 @main.route('/user/<uname>/update/pic',methods= ['POST'])
 @login_required
 def update_pic(uname):
-    user = User.query.filter_by(username = uname).first()
+    user = User.query.filter_by(user = uname).first()
     if 'photo' in request.files:
         filename = photos.save(request.files['photo'])
         path = f'photos/{filename}'
@@ -150,17 +151,17 @@ def update_pic(uname):
 
 @main.route('/user/<uname>')
 def profile(uname):
-    user = User.query.filter_by(username = uname).first()
+    user = User.query.filter_by(user = uname).first()
 
     if user is None:
         abort(404)
 
-    return render_template("profile/profile.html", user = user)
+    return render_template("profile/profile.html")
 
 @main.route('/user/<uname>/update',methods = ['GET','POST'])
 @login_required
 def update_profile(uname):
-    user = User.query.filter_by(username = uname).first()
+    user = User.query.filter_by(user = uname).first()
     if user is None:
         abort(404)
 
@@ -172,7 +173,7 @@ def update_profile(uname):
         db.session.add(user)
         db.session.commit()
 
-        return redirect(url_for('.profile',uname=user.username))
+        return redirect(url_for('.profile',uname=user.user))
 
     return render_template('profile/update.html',form =form)
 
@@ -188,7 +189,7 @@ def view_comments(id):
 def one_pitch(id):
 
     pitch = Pitch.query.get(id)
-    form = CommentForm()
+    form = Form()
     pitch = Pitch.query.filter_by(id=id).first()
 
     if form.validate_on_submit():
@@ -200,9 +201,8 @@ def one_pitch(id):
             content=form.content.data,
             time=datetime.utcnow(),
             comments=pitch,
-            comment=current_user)
-
-        # save comment
+            # comment=current_use
+        )
         db.session.add(new_comment)
         db.session.commit()
 
