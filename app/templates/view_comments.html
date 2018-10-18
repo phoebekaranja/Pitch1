@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block content %}
+{% for comment in comment %}
+<div class="jumbotron col-md-8">
+  <p>{{view_comment.user}}</p>
+  <img src="comment.profile_pic_path">
+  <P>{{view_comment.comment_name}}</P>
+  <p>{{view_commentscomment.date_posted}}</p>
+  <p>Pitch-Id: {{comment.pitches_id}}</p>
+
+</div>
+
+{% endfor %}
+
+
+
+
+    <title>Pitch1</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="{{ url_for('static', filename='font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='clean-blog.min.css') }}" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+  <a href="/">Home</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
+
+  </div>
+</nav>
+
+    <!-- Page Header -->
+    <header class="masthead" style="background-image: url('{{ url_for('static', filename='post-bg.jpg') }}')">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="post-heading">
+              <h1>{{ pitch1.pitch_title }}</h1>
+                <br>
+              </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+
+<br>
+<div class="container">
+    <h4>Comments</h4>
+
+
+<div class="card">
+      <div class="card-header">
+  </div>
+
+  <div class="card-body">
+          <blockquote class="blockquote mb-0">
+
+            <p> {{view_comments comment.comment_content}} </p>
+              <footer class="blockquote-footer">posted on <cite title="Source Title">{{comment.posted.strftime('%B %d, %Y')}}</cite></footer>
+
+    </blockquote>
+
+  </div>
+</div>
+    <br>
+{% endfor %}
+    </div>
+
+
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <p class="copyright text-muted">Copyright &copy; phoebe 2018</p>
+          </div>
+        </div>
+      </div>
+    </footer>
