@@ -1,13 +1,11 @@
 from flask import render_template, request, redirect, url_for, abort
 from flask_login import login_required,current_user
 from . import main
-from ..models import Current_user, Pitch, Comment
+from ..models import User, Pitch, Comment
 from .forms import *
 from .. import db, photos
 from datetime import datetime
-
-
-import markdown2
+# import markdown2
 
 
 
@@ -22,7 +20,7 @@ def index():
     search_pitch = request.args.get('pitch_query')
     pitches= Pitch.get_all_pitches()
 
-    return render_template('index.html', title = title, pitches= pitches,user=current_user)
+    return render_template('index.html', title = title, pitches= pitches)
 
 #this section consist of the category root functions
 
@@ -59,6 +57,7 @@ def promotion():
 
 
 @main.route('/product/pitches/')
+@login_required
 def product():
     '''
     View root page function that returns the index page and its data
@@ -132,7 +131,9 @@ def new_comment(id):
     form = CommentsForm()
     vote_form = UpvoteForm()
     if form.validate_on_submit():
-        new_comment = Comment(pitch_id =id,comment=form.comment.data,user=current_user.user,votes=form.vote.data)
+        comment=form.comment.data
+        vote=form.vote.data
+        new_comment = Comment(comment=comment,vote=vote,user=current_user)
         new_comment.save_comment()
         return redirect(url_for('main.index'))
     #title = f'{pitch_result.id} review'

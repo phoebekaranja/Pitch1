@@ -8,9 +8,9 @@ from datetime import datetime
 
 @login_manager.user_loader
 def load_user(user_id):
-    return Current_user.query.get(int(user_id))
+    return User.query.get(int(user_id))
 
-class Current_user(UserMixin, db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer,primary_key = True)
     username = db.Column(db.String(255),index = True)
@@ -44,7 +44,7 @@ class Current_user(UserMixin, db.Model):
             return check_password_hash(self.pass_secure, password)
 
     def __repr__(self):
-        return f'Current_user {self.username}'
+        return f'User {self.username}'
 
 class Pitch (db.Model):
     '''
@@ -116,10 +116,10 @@ class Role(db.Model):
 
     id = db.Column(db.Integer,primary_key = True)
     name = db.Column(db.String(255))
-    users = db.relationship('Current_user',backref = 'role',lazy="dynamic")
+    users = db.relationship('User',backref = 'role',lazy="dynamic")
 
     def __repr__(self):
-        return f'Current_user {self.name}'
+        return f'User {self.name}'
 
 
 class PitchCategory(db.Model):
