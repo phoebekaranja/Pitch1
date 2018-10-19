@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, url_for, abort
 from flask_login import login_required,current_user
 from . import main
 from ..models import User, Pitch, Comment
-from .forms import *
+from .forms import CommentsForm,UpvoteForm,PitchForm,UpdateProfile
 from .. import db, photos
 from datetime import datetime
 # import markdown2
@@ -183,8 +183,18 @@ def view_comments(id):
     '''
     Function that returs  the comments belonging to a particular pitch
     '''
-    comments = Comment.get_comments(id)
-    return render_template('view_comments.html',comments = comments, id=id)
+    form= CommentsForm()
+    if form.validate_on_submit():
+        comment=form.comment.data
+        votes = form.vote.data
+
+        new_comment=Comment(comment=comment,votes=votes)
+
+        new_comment.save_comment()
+        return redirect(url_for('main.comment'))
+
+    return render_template('comment.html',comment_form=form)
+
 
 @main.route('/onepitch/<int:id>', methods=['GET', 'POST'])
 def one_pitch(id):
@@ -212,14 +222,14 @@ def one_pitch(id):
     return render_template('viewpitch.html', pitch=pitch, id=id, comment_form=form, comments=comments)
 
 
-# @main.route('/like/<pitch_id>')
-# def like (pitch_id):
-#     print('% liked' % pitch_id)
+@main.route('/like/<pitch_id>')
+def like (pitch_id):
+    print('% liked' % pitch_id)
 
 
-# @main.route('/dislike/<pitch_id>')
-# def dislike(pitch_id):
-#     print('% disliked' % pitch_id)
+@main.route('/dislike/<pitch_id>')
+def dislike(pitch_id):
+    print('% disliked' % pitch_id)
 
 
 @main.route('/test/<int:id>')

@@ -4,12 +4,12 @@ from wtforms.validators import Required
 
 class CommentsForm(FlaskForm):
     comment = TextAreaField('Comment', validators=[Required()])
-    vote=RadioField('default field arguments', choices=[('1', 'UpVote'), ('1', 'DownVote')])
-    submit = SubmitField('SUBMIT')  
+    vote=RadioField('default field arguments', choices=[(1, 'UpVote'), (1, 'DownVote')])
+    submit = SubmitField('SUBMIT')
 
 class UpdateProfile(FlaskForm):
     bio = TextAreaField('Tell us about you.',validators = [Required()])
-    submit = SubmitField('Submit') 
+    submit = SubmitField('Submit')
 
 class PitchForm(FlaskForm):
     category_id = SelectField('Select Category', choices=[('1', 'Interview'), ('2', 'Pick Up Lines'), ('3', 'Promotion'),('4','Product')])

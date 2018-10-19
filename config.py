@@ -4,8 +4,7 @@ class Config:
     '''
     General configuration parent class
     '''
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://pheobe:pheobe@localhost/pitch1'
-    SECRET_KEY = 'os.environ.get'
+    SECRET_KEY = os.environ.get("SECRET_KEY")
     UPLOADED_PHOTOS_DEST ='app/static/photos'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     #  email configurations
@@ -22,8 +21,8 @@ class Config:
     SIMPLEMDE_USE_CDN = True
 
 class TestConfig(Config):
-    
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://pheobe:pheobe@localhost/pitch1_test'
+
+    SQLALCHEMY_DATABASE_URI='postgresql+psycopg2://pheobe:pheobe@localhost/pitch1_test'
 
 
 class ProdConfig(Config):
@@ -41,10 +40,8 @@ class DevConfig(Config):
     Args:
         Config: The parent configuration class with General configuration settings
     '''
-
-
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://pheobe:pheobe@localhost/pitch1'
     DEBUG = True
-
 
 config_options = {
 'development':DevConfig,

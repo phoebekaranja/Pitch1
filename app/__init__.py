@@ -23,8 +23,7 @@ def create_app(config_name):
     # Creating the app configuration
     app.config.from_object(config_options[config_name])
     app.config.from_object(Config)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://pheobe:pheobe@snappiesticker-24.postgres.pythonanywhere-services.com:10024/snappie'
-
+    
 
 
 
