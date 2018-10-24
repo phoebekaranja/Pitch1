@@ -1,18 +1,13 @@
 {% extends 'base.html' %}
+{% import 'macros.html' as macro%}
+<br>
+<br>
+<br>
+<br>
+<br>
 
-
-
+<p style="color:black">awesome, something is happening</p>
 {% block content %}
-  {% for comment in comments %}
-    <div class="jumbotron col-md-8">
-      <p>{{view_comment.user}}</p>
-      <img src="comment.profile_pic_path">
-      <P>{{view_comment.comment_name}}</P>
-      <p>{{view_commentscomment.date_posted}}</p>
-      <p>Pitch-Id: {{comment.pitches_id}}</p>
-
-    </div>
-
-  {% endfor %}
+{{macro.displayComments(comments)}}
 
 {% endblock %}

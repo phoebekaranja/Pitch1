@@ -128,16 +128,16 @@ def category(id):
 @main.route('/pitch/comments/new/<int:id>',methods = ['GET','POST'])
 @login_required
 def new_comment(id):
+    pitch = Pitch.query.get_or_404(id)
     form = CommentsForm()
-    vote_form = UpvoteForm()
     if form.validate_on_submit():
         comment=form.comment.data
-        vote=form.vote.data
-        new_comment = Comment(comment=comment,vote=vote,user=current_user)
+        # vote=form.vote.data
+        new_comment = Comment(comment=comment)
         new_comment.save_comment()
         return redirect(url_for('main.index'))
     #title = f'{pitch_result.id} review'
-    return render_template('comment.html',comment_form=form, vote_form= vote_form)
+    return render_template('comment.html',comment_form=form)
 
 @main.route('/user/<uname>/update/pic',methods= ['POST'])
 @login_required
@@ -178,29 +178,38 @@ def update_profile(uname):
 
     return render_template('profile/update.html',form =form)
 
-@main.route('/view/comment/<int:id>')
+@main.route('/view/comment/<int:id>', methods=['GET'])
 def view_comments(id):
     '''
     Function that returs  the comments belonging to a particular pitch
     '''
-    form= CommentsForm()
-    if form.validate_on_submit():
-        comment=form.comment.data
-        votes = form.vote.data
+    pitch_id = id
+    print(pitch_id)
 
-        new_comment=Comment(comment=comment,votes=votes)
+    # pitch = Pitch.query.get(id)
+    comments = Comment.get_comments(pitch_id)
+    print(comments)
+    if comments:
 
-        new_comment.save_comment()
-        return redirect(url_for('main.comment'))
+    # form= CommentsForm()
+    # if form.validate_on_submit():
+    #     comment=form.comment.data
+    #     votes = form.vote.datas
+    #
+    #     new_comment=Comment(comment=comment,votes=votes)
+    #
+    #     new_comment.save_comment()
+    #     return redirect(url_for('main.comment'))
 
-    return render_template('comment.html',comment_form=form)
+        return render_template('view_comments.html', comments=comments)
+    return render_template('index.html')
 
 
 @main.route('/onepitch/<int:id>', methods=['GET', 'POST'])
 def one_pitch(id):
 
     pitch = Pitch.query.get(id)
-    form = Form()
+    form = CommentsForm()
     pitch = Pitch.query.filter_by(id=id).first()
 
     if form.validate_on_submit():
